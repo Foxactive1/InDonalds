@@ -1,102 +1,130 @@
-# 🍔 Donalds Fast Food — PWA & Full-Stack Web App
+# 🍔 InDonalds — Fast Food PWA
 
-![License](https://img.shields.io/badge/license-MIT-red.svg)
-![PWA](https://img.shields.io/badge/PWA-Ready-ffd60a.svg)
-![Supabase](https://img.shields.io/badge/Supabase-Database-2ec27e.svg)
-![Flask](https://img.shields.io/badge/Backend-Flask-000000.svg)
-
-Aplicação Web e Progressive Web App (PWA) de alto desempenho para pedido online de refeições fast food. Desenvolvido com foco em **experiência mobile-first**, **suporte offline** com sincronização automática e **segurança nativa via RLS**.
+PWA de fast food com cardápio digital, carrinho, pedidos e suporte offline.  
+Stack: HTML/CSS/JS puro · Supabase (PostgreSQL) · Flask (API serverless) · Vercel
 
 ---
 
-## 🚀 Funcionalidades
+## 🗂️ Estrutura do Projeto
 
-- **📱 Progressive Web App (PWA):** Instalável em dispositivos móveis e desktops, com Service Worker e Web App Manifest configurados.
-- **📡 Suporte Offline-First:** Navegação do histórico e criação de pedidos mesmo sem conexão com a internet (sincronização automática via `localStorage` ao reconectar).
-- **🍔 Cardápio Dinâmico:** Interface fluida com animações, feedback visual em tempo real (toasts) e carregamento otimizado (*Skeleton Screens*).
-- **🛒 Carrinho de Compras:** Gestão completa de quantidade, cálculo em tempo real e prevenção contra falhas de rede.
-- **⚡ Backend Híbrido:** Integração direta do Frontend com Supabase via cliente JavaScript e/ou via API Restful utilizando Python + Flask.
-- **🛡️ Segurança & Sanitização:** Proteção nativa contra Cross-Site Scripting (XSS) e Row Level Security (RLS) configurado no PostgreSQL.
-
----
-
-## 🛠️ Tecnologias Utilizadas
-
-### Frontend
-- **HTML5 & CSS3 Vanilla:** Design system customizado (*Dark Diner theme*), responsivo e acessível (Diretrizes WCAG / WAI-ARIA).
-- **JavaScript (ES6+):** Lógica desacoplada em módulos (`app.js`, `cart.js`, `utils.js`, `offline.js`).
-- **PWA Tooling:** Service Worker com suporte a *Cache Storage* e `manifest.json`.
-
-### Backend & Banco de Dados
-- **Python / Flask:** API REST opcional para consumo seguro do banco e orquestração.
-- **Supabase (PostgreSQL):** Banco de dados relacional com extensão UUID, triggers automatizadas para `updated_at` e Row Level Security (RLS).
-- **Prisma ORM (Opcional):** Mapeamento objeto-relacional para Node.js / TypeScript.
-
----
-
-## 📁 Estrutura do Projeto
-
-```text
-.
-├── index.html              # Página principal (Cardápio)
-├── cart.html               # Tela do Carrinho de Compras
-├── orders.html             # Histórico de Pedidos
-├── service-worker.js       # Gerenciamento de cache PWA
-├── app.py                  # API REST em Flask
-├── schema.sql              # Script SQL de criação e limpeza do Supabase
+```
+InDonalds/
+├── index.html          # Cardápio
+├── cart.html           # Carrinho
+├── orders.html         # Histórico de pedidos
+├── app.py              # Servidor local de desenvolvimento
+├── schema.sql          # Schema do banco Supabase
+├── requirements.txt    # Dependências Python
+├── vercel.json         # Configuração de deploy
+├── api/
+│   └── index.py        # Entrypoint serverless Flask (Vercel)
 ├── css/
-│   └── style.css           # Estilos globais e variáveis de tema
+│   └── style.css
 ├── js/
-│   ├── supabase.js         # Inicialização do cliente Supabase
-│   ├── utils.js            # Utilitários (Sanitização XSS, Toast, Formatação)
-│   ├── app.js              # Lógica da vitrine e busca de produtos
-│   ├── cart.js             # Gerenciamento do carrinho e checkout
-│   └── offline.js          # Sincronização offline-first
-├── assets/
-│   └── images/             # Ícones do PWA e imagens locais
+│   ├── supabase.js     # Inicialização do cliente Supabase
+│   ├── utils.js        # Toast, badge, formatação, XSS
+│   ├── app.js          # Carregamento do cardápio
+│   ├── cart.js         # Gerenciamento do carrinho + checkout
+│   ├── orders.js       # Carregamento dos pedidos
+│   └── offline.js      # Sincronização offline → online
 └── pwa/
-    └── manifest.json       # Configuração do PWA
+    ├── manifest.json
+    ├── service-worker.js
+    └── icons/
+        ├── icon-192.png   ← Você precisa criar estes ícones
+        └── icon-512.png   ← Você precisa criar estes ícones
+```
 
-⚙️ Como Executar o Projeto
-Pré-requisitos
- * Navegador moderno com suporte a PWA.
- * Python 3.10+ (caso queira rodar o servidor backend Flask).
- * Conta no Supabase.
-1. Configuração do Banco de Dados (Supabase)
- * Acesse o SQL Editor no painel do Supabase.
- * Execute o script contido no arquivo schema.sql do repositório para criar as tabelas products e orders, configurar as triggers e habilitar a segurança RLS.
-2. Configuração do Frontend Estático
- * Clone o repositório:
-   git clone [https://github.com/seu-usuario/donalds-fast-food.git](https://github.com/seu-usuario/donalds-fast-food.git)
-cd donalds-fast-food
+---
 
- * Edite o arquivo js/supabase.js adicionando suas credenciais do Supabase:
-   const SUPABASE_URL = "[https://SEU-PROJETO.supabase.co](https://SEU-PROJETO.supabase.co)";
-const SUPABASE_KEY = "SUA_PUBLISHABLE_KEY";
+## ⚙️ Configuração do Banco (Supabase)
 
- * Abra o arquivo index.html em qualquer servidor estático ou extensões como Live Server do VS Code.
-3. Executando o Backend Flask (Opcional)
- * Crie um ambiente virtual e instale as dependências:
-   python -m venv venv
-source venv/bin/activate  # Linux/macOS
-# venv\Scripts\activate   # Windows
+1. Crie um projeto em [supabase.com](https://supabase.com)
+2. Acesse **SQL Editor** e execute o conteúdo de `schema.sql`
+3. Anote a **Project URL** e a **anon key** do painel **Settings > API**
 
-pip install flask supabase python-dotenv
+---
 
- * Crie um arquivo .env na raiz com as chaves:
-   SUPABASE_URL="[https://SEU-PROJETO.supabase.co](https://SEU-PROJETO.supabase.co)"
-SUPABASE_KEY="SUA_PUBLISHABLE_KEY"
+## 🔐 Variáveis de Ambiente
 
- * Inicie o servidor:
-   python app.py
+> **NUNCA** comite chaves reais no repositório.
 
-   A aplicação estará acessível em http://localhost:5000.
-🔒 Segurança
- * Row Level Security (RLS): As políticas aplicadas garantem que usuários anônimos consigam ler produtos e criar pedidos, protegendo alterações não autorizadas.
- * Sanitização de Entradas: Todas as renderizações no DOM passam por escape manual de caracteres especiais para evitar ataques do tipo XSS (Cross-Site Scripting).
-📄 Licença
-Este projeto está sob a licença MIT.
-<p center>
-Desenvolvido por <strong>InNovaIdeia</strong>
-</p>
+### Vercel (produção)
 
+No painel do Vercel:  
+**Seu Projeto → Settings → Environment Variables**
+
+| Nome           | Valor                            |
+|----------------|----------------------------------|
+| `SUPABASE_URL` | `https://xxxx.supabase.co`       |
+| `SUPABASE_KEY` | `sua-chave-anon-publica`         |
+
+### Local (desenvolvimento)
+
+Crie um arquivo `.env` na raiz (já está no `.gitignore`):
+
+```env
+SUPABASE_URL=https://xxxx.supabase.co
+SUPABASE_KEY=sua-chave-anon-publica
+```
+
+---
+
+## 🚀 Deploy no Vercel
+
+```bash
+# 1. Instale a CLI do Vercel
+npm i -g vercel
+
+# 2. Faça login
+vercel login
+
+# 3. Deploy
+vercel --prod
+```
+
+Ou conecte o repositório GitHub diretamente pelo painel do Vercel.
+
+---
+
+## 💻 Desenvolvimento Local
+
+```bash
+# Instale as dependências Python
+pip install -r requirements.txt
+
+# Configure o .env (veja acima)
+
+# Inicie o servidor
+python app.py
+# → http://localhost:5000
+```
+
+---
+
+## 🖼️ Ícones PWA (obrigatório para instalação)
+
+Crie os ícones e coloque em `pwa/icons/`:
+
+- `icon-192.png` — 192×192 px
+- `icon-512.png` — 512×512 px
+
+Ferramentas gratuitas: [favicon.io](https://favicon.io) · [realfavicongenerator.net](https://realfavicongenerator.net)
+
+---
+
+## 📱 Funcionalidades
+
+- ✅ Cardápio dinâmico via Supabase
+- ✅ Carrinho persistido em `localStorage`
+- ✅ Checkout com inserção direta no Supabase
+- ✅ Suporte offline com fila de pedidos e sync automático
+- ✅ PWA instalável (Android/iOS)
+- ✅ Proteção XSS em todos os pontos de renderização
+- ✅ Skeleton loading no cardápio
+- ✅ Toast de feedback para o usuário
+- ✅ Badge animado no carrinho
+
+---
+
+InNovaIdeia Assessoria em Tecnologia © 2026
