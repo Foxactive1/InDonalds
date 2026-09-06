@@ -1,37 +1,36 @@
 {
-  "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "app.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "**",
-      "use": "@vercel/static"
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
     }
   ],
-  "routes": [
+  "headers": [
     {
-      "src": "/api/(.*)",
-      "dest": "/app.py"
+      "source": "/pwa/service-worker.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/javascript; charset=utf-8"
+        },
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/"
+        }
+      ]
     },
     {
-      "src": "/service-worker.js",
-      "headers": {
-        "cache-control": "no-cache, no-store, must-revalidate"
-      },
-      "dest": "/service-worker.js"
-    },
-    {
-      "src": "/pwa/manifest.json",
-      "headers": {
-        "content-type": "application/manifest+json; charset=utf-8"
-      },
-      "dest": "/pwa/manifest.json"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "source": "/pwa/manifest.json",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/manifest+json; charset=utf-8"
+        }
+      ]
     }
   ]
 }
