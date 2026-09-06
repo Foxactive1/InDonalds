@@ -7,21 +7,26 @@
 
   <title>Carrinho — Donalds</title>
 
-  <link rel="manifest" href="pwa/manifest.json">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="/pwa/manifest.json">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script>
+    window.__SUPABASE_URL__ = "@SUPABASE_URL@";
+    window.__SUPABASE_KEY__ = "@SUPABASE_KEY@";
+  </script>
 </head>
 <body>
 
-  <!-- Banner offline com suporte a leitores de tela -->
+  <!-- Banner offline -->
   <div id="offline-banner" class="offline-banner" role="status" aria-live="polite">
     📡 Sem conexão — o pedido será salvo para sincronizar.
   </div>
 
   <!-- Navbar -->
   <nav class="navbar-donalds">
-    <a href="index.html" class="brand-logo">Donalds</a>
+    <a href="/" class="brand-logo">Donalds</a>
     <div class="nav-actions">
-      <a href="orders.html" class="btn-cart" style="background:transparent;border:1px solid #333;color:var(--text-muted);font-size:.82rem;">
+      <a href="/orders.html" class="btn-cart" style="background:transparent;border:1px solid #333;color:var(--text-muted);font-size:.82rem;">
         Meus Pedidos
       </a>
     </div>
@@ -34,7 +39,7 @@
   <main class="cart-page">
 
     <div class="cart-header">
-      <a href="index.html" class="btn-back" title="Voltar ao cardápio" aria-label="Voltar ao cardápio">
+      <a href="/" class="btn-back" title="Voltar ao cardápio" aria-label="Voltar ao cardápio">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
           <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
         </svg>
@@ -45,7 +50,7 @@
     <!-- Lista de itens (renderizada por cart.js) -->
     <div id="cartList"></div>
 
-    <!-- Resumo do pedido (renderizado por cart.js) -->
+    <!-- Resumo do pedido -->
     <div id="cartSummary" class="cart-summary" style="display:none"></div>
 
     <!-- Botão finalizar -->
@@ -65,14 +70,16 @@
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/supabase.js"></script>
-  <script src="js/utils.js"></script>
-  <script src="js/cart.js"></script>
-  <script src="js/offline.js"></script>
+  <script src="/js/supabase.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/offline.js"></script>
 
   <script>
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("pwa/service-worker.js").catch(() => {});
+      navigator.serviceWorker
+        .register("/pwa/service-worker.js", { scope: "/" })
+        .catch(() => {});
     }
   </script>
 
