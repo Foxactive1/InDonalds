@@ -1,0 +1,14 @@
+<!-- 
+  _env.html — Snippet de injeção de credenciais Supabase
+  Inclua este bloco no <head> de cada página, ANTES de qualquer <script>.
+  Os valores @SUPABASE_URL@ e @SUPABASE_KEY@ são substituídos automaticamente
+  pelo Vercel ao usar o recurso "Environment Variable Injection" no vercel.json,
+  ou manualmente via painel Vercel > Settings > Environment Variables.
+
+  ATENÇÃO: Este arquivo é apenas de referência.
+  O trecho abaixo já está inserido em index.html, cart.html e orders.html.
+-->
+<script>
+  window.__SUPABASE_URL__ = "@SUPABASE_URL@";
+  window.__SUPABASE_KEY__ = "@SUPABASE_KEY@";
+</script>

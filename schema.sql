@@ -1,6 +1,6 @@
 -- ============================================================
 -- Donalds Fast Food — Schema Banco de Dados Supabase / PostgreSQL
--- InNovaIdeia ©  2026
+-- InNovaIdeia © 2026
 -- ============================================================
 
 -- Habilita extensão para geração de UUID (caso não esteja ativa)
