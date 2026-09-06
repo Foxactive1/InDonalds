@@ -1,16 +1,14 @@
-// js/supabase.js
-// As credenciais são injetadas pelo Vercel via variáveis de ambiente.
-// NUNCA comite chaves reais aqui — use o painel Vercel > Settings > Environment Variables.
+// js/supabase.js — InNovaIdeia © 2026
+//
+// ⚠️  ATENÇÃO: A chave "anon" do Supabase é PÚBLICA por design.
+//     Ela só permite o que as políticas RLS do banco autorizam.
+//     Nunca use aqui a "service_role" key (essa sim é secreta).
+//
+// Como obter suas credenciais:
+//   Supabase Dashboard → seu projeto → Settings → API
+//   Copie "Project URL" e "anon / public" key.
 
-const SUPABASE_URL = window.__SUPABASE_URL__ || "";
-const SUPABASE_KEY = window.__SUPABASE_KEY__ || "";
-
-if (!SUPABASE_URL || !SUPABASE_KEY) {
-  console.error(
-    "[supabase.js] Credenciais ausentes. " +
-    "Defina SUPABASE_URL e SUPABASE_KEY nas variáveis de ambiente do Vercel " +
-    "e certifique-se de que o snippet de injeção está no <head> de cada página."
-  );
-}
+const SUPABASE_URL = "https://sloyzgjbmmkypofeetrv.supabase.co";
+const SUPABASE_KEY = "COLE_AQUI_SUA_ANON_KEY";   // ← substitua pela anon key real
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
