@@ -65,13 +65,14 @@
   <script src="js/offline.js"></script>
 
   <!-- PWA Service Worker -->
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("pwa/service-worker.js")
-        .then(() => console.log("[SW] Registrado"))
-        .catch((e) => console.warn("[SW] Falha:", e));
-    }
-  </script>
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("pwa/service-worker.js", { scope: "/" })
+      .then(() => console.log("[SW] Registrado com escopo raiz"))
+      .catch((e) => console.warn("[SW] Falha ao registrar:", e));
+  }
+</script>
+
 
 </body>
 </html>
