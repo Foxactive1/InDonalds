@@ -1,8 +1,16 @@
 // js/supabase.js
+// As credenciais são injetadas pelo Vercel via variáveis de ambiente.
+// NUNCA comite chaves reais aqui — use o painel Vercel > Settings > Environment Variables.
 
-// Substitua pela URL do seu projeto no Supabase
-const SUPABASE_URL = "https://sloyzgjbmmkypofeetrv.supabase.co";
-const SUPABASE_KEY = "sb_publishable_RyM65xNN5h5jn5gGGTu6dw_kPHHw1Dc";
+const SUPABASE_URL = window.__SUPABASE_URL__ || "";
+const SUPABASE_KEY = window.__SUPABASE_KEY__ || "";
 
-// Inicialização do cliente Supabase para o browser
+if (!SUPABASE_URL || !SUPABASE_KEY) {
+  console.error(
+    "[supabase.js] Credenciais ausentes. " +
+    "Defina SUPABASE_URL e SUPABASE_KEY nas variáveis de ambiente do Vercel " +
+    "e certifique-se de que o snippet de injeção está no <head> de cada página."
+  );
+}
+
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
