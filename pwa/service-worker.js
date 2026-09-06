@@ -1,24 +1,27 @@
 /**
  * pwa/service-worker.js
  * InNovaIdeia © 2026
+ * Registrado com scope "/" — todos os caminhos são absolutos.
  */
 
-const CACHE_NAME = "donalds-v3";
+const CACHE_NAME = "donalds-v4";
 
 const PRECACHE_ASSETS = [
-  "../",
-  "../index.html",
-  "../cart.html",
-  "../orders.html",
-  "../css/style.css",
-  "../js/supabase.js",
-  "../js/utils.js",
-  "../js/app.js",
-  "../js/cart.js",
-  "../js/offline.js",
-  "../pwa/manifest.json"
+  "/",
+  "/index.html",
+  "/cart.html",
+  "/orders.html",
+  "/css/style.css",
+  "/js/supabase.js",
+  "/js/utils.js",
+  "/js/app.js",
+  "/js/cart.js",
+  "/js/offline.js",
+  "/js/orders.js",
+  "/pwa/manifest.json"
 ];
 
+/* ─── Install: pré-cache dos assets estáticos ─────────────── */
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(async (cache) => {
@@ -34,6 +37,7 @@ self.addEventListener("install", (event) => {
   self.skipWaiting();
 });
 
+/* ─── Activate: remove caches antigos ─────────────────────── */
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -47,23 +51,33 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
+/* ─── Fetch: estratégia híbrida ────────────────────────────── */
 self.addEventListener("fetch", (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
+  // Ignora requisições não-GET
   if (request.method !== "GET") return;
 
-  if (url.hostname.includes("supabase.co") || url.pathname.startsWith("/api/")) {
+  // Deixa o Supabase e a API Flask passarem direto (sempre rede)
+  if (
+    url.hostname.includes("supabase.co") ||
+    url.pathname.startsWith("/api/")
+  ) {
     return;
   }
 
+  // Navegação entre páginas: tenta rede primeiro, fallback para cache
   if (request.mode === "navigate") {
     event.respondWith(networkFirst(request));
     return;
   }
 
+  // Assets estáticos (CSS, JS, fontes): cache primeiro, rede como fallback
   event.respondWith(cacheFirst(request));
 });
+
+/* ─── Estratégias de cache ─────────────────────────────────── */
 
 async function cacheFirst(request) {
   const cached = await caches.match(request);
@@ -92,6 +106,7 @@ async function networkFirst(request) {
   } catch {
     const cached = await caches.match(request);
     if (cached) return cached;
-    return caches.match("../index.html");
+    // Fallback final: retorna a página principal
+    return caches.match("/index.html");
   }
 }
